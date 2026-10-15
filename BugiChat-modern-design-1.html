@@ -1,0 +1,1106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BugiChat - Connect with Everyone</title>
+
+<style>
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #f4f5fb;
+  color: #24243b;
+}
+
+header {
+  background: linear-gradient(135deg, #6546ed, #3822a8);
+  color: white;
+  padding: 22px 18px;
+}
+
+header h1 {
+  margin: 0;
+  font-size: 28px;
+}
+
+header p {
+  margin-bottom: 0;
+}
+
+main {
+  max-width: 600px;
+  margin: auto;
+  padding: 18px;
+}
+
+.panel {
+  background: white;
+  padding: 20px;
+  border-radius: 18px;
+  margin-bottom: 18px;
+  box-shadow: 0 4px 18px #00000008;
+}
+
+h2 {
+  margin-top: 0;
+}
+
+input {
+  width: 100%;
+  padding: 13px;
+  margin: 7px 0;
+  border: 1px solid #dedbea;
+  border-radius: 11px;
+  font-size: 16px;
+  outline-color: #6546ed;
+}
+
+button {
+  border: 0;
+  background: #6546ed;
+  color: white;
+  padding: 12px 16px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+button:disabled {
+  opacity: .5;
+  cursor: not-allowed;
+}
+
+.full {
+  width: 100%;
+  margin-top: 10px;
+}
+
+.secondary {
+  background: #eeeaff;
+  color: #5037c9;
+}
+
+.hidden {
+  display: none !important;
+}
+
+.muted {
+  color: #777;
+  font-size: 13px;
+}
+
+#status {
+  padding: 12px;
+  border-radius: 10px;
+  background: #eeeaff;
+  margin-bottom: 15px;
+  overflow-wrap: anywhere;
+}
+
+.user-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: white;
+  padding: 13px;
+  border-radius: 14px;
+  margin: 10px 0;
+  box-shadow: 0 3px 12px #00000008;
+}
+
+.avatar {
+  width: 46px;
+  height: 46px;
+  flex-shrink: 0;
+  background: #e8e1ff;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-size: 22px;
+}
+
+.user-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.user-info strong {
+  display: block;
+  overflow-wrap: anywhere;
+}
+
+#chatBox {
+  background: white;
+  padding: 16px;
+  border-radius: 18px;
+}
+
+#messages, #groupMessages {
+  height: 320px;
+  overflow-y: auto;
+  background: #f5f3fc;
+  border-radius: 12px;
+  padding: 12px;
+  margin: 15px 0;
+}
+
+.message {
+  padding: 10px 12px;
+  border-radius: 13px;
+  background: white;
+  margin: 8px 0;
+  max-width: 85%;
+  overflow-wrap: anywhere;
+}
+
+.message.mine {
+  background: #6546ed;
+  color: white;
+  margin-left: auto;
+}
+
+.message small {
+  display: block;
+  font-size: 10px;
+  opacity: .75;
+  margin-bottom: 5px;
+}
+
+#messageForm, #groupMessageForm {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+#messageInput, #groupMessageInput {
+  flex: 1;
+  min-width: 0;
+}
+
+footer {
+  text-align: center;
+  padding: 25px;
+  color: #777;
+  font-size: 12px;
+}
+
+/* BugiChat modern purple redesign */
+:root{color-scheme:light;--bc-purple:#7654f6;--bc-ink:#201a37;--bc-muted:#77718d}
+body{font-family:Inter,"Segoe UI",Roboto,Arial,sans-serif;background:radial-gradient(ellipse at 10% 0%,rgba(145,111,255,.18),transparent 36%),radial-gradient(ellipse at 100% 25%,rgba(102,75,226,.10),transparent 32%),#f7f5ff;color:var(--bc-ink);min-height:100vh}
+header{position:relative;overflow:hidden;padding:28px 20px 30px;background:linear-gradient(135deg,#21113f 0%,#4a25b8 54%,#8c63ff 100%);box-shadow:0 12px 35px rgba(66,38,151,.22)}
+header:after{content:"";position:absolute;width:210px;height:210px;border:1px solid rgba(255,255,255,.15);border-radius:50%;right:-65px;top:-105px;box-shadow:0 0 0 25px rgba(255,255,255,.04),0 0 0 55px rgba(255,255,255,.03);pointer-events:none}
+header h1{font-size:clamp(28px,6vw,36px);letter-spacing:-.8px}
+header p{color:rgba(255,255,255,.82);font-size:14px}
+main{max-width:680px;padding:20px 15px 30px}
+.panel,#chatBox{background:rgba(255,255,255,.95);border:1px solid rgba(231,224,250,.9);border-radius:22px;padding:20px;margin-bottom:16px;box-shadow:0 10px 30px rgba(48,31,100,.065);backdrop-filter:blur(10px)}
+h2{color:#2a2048;font-size:20px;letter-spacing:-.35px}
+.muted{color:var(--bc-muted);line-height:1.5}
+input{background:#fbfaff;border:1px solid #e5def8;border-radius:13px;min-height:47px;padding:13px 14px;transition:border-color .18s,box-shadow .18s}
+input:focus{border-color:var(--bc-purple);background:#fff;box-shadow:0 0 0 4px rgba(118,84,246,.12);outline:none}
+button{background:linear-gradient(135deg,#8968ff,#5a35db);border-radius:13px;min-height:43px;box-shadow:0 5px 13px rgba(100,65,220,.17);transition:transform .15s,filter .15s}
+button:active{transform:scale(.98)}
+button:hover{filter:brightness(1.04);box-shadow:0 7px 17px rgba(100,65,220,.22)}
+button.secondary{background:#f0ebff;color:#5635c7;box-shadow:none;border:1px solid #e5dcff}
+#status{background:#eee8ff;color:#4f36a5;border:1px solid #e3d9ff;border-radius:13px;font-size:13px;line-height:1.45}
+.user-card{background:#fff;border:1px solid #eee9fa;border-radius:17px;padding:12px;margin:10px 0;box-shadow:0 5px 15px rgba(42,28,89,.045);transition:transform .15s,border-color .15s}
+.user-card:hover{transform:translateY(-1px);border-color:#d9ccff}
+.avatar{width:49px;height:49px;color:#5a35cb;background:linear-gradient(135deg,#f0eaff,#ded3ff);border:2px solid #fff;box-shadow:0 0 0 1px #e7defd;overflow:hidden}
+.user-info strong{font-size:15px;margin-bottom:3px}
+.user-info small{display:block;overflow-wrap:anywhere}
+.presence{display:flex;align-items:center;gap:6px;margin-top:5px;color:#79728c;font-size:11px}
+.presence-dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:#a7a1b6}
+.presence-dot.online{background:#20c985;box-shadow:0 0 0 3px rgba(32,201,133,.13)}
+.unread-badge{display:inline-grid;place-items:center;min-width:22px;height:22px;padding:0 6px;margin:0 auto 6px;border-radius:999px;color:#fff;background:#f04476;font-size:11px;font-weight:800}
+#chatBox{padding:17px}
+#messages,#groupMessages{height:min(48vh,430px);min-height:250px;background:linear-gradient(180deg,#f8f6ff,#f1edff);border:1px solid #e9e2fc;border-radius:17px;padding:13px}
+.message{width:fit-content;max-width:86%;background:#fff;border:1px solid #eee8fa;border-radius:16px 16px 16px 5px;padding:11px 13px;box-shadow:0 3px 9px rgba(42,28,89,.045);line-height:1.45}
+.message.mine{background:linear-gradient(135deg,#8968ff,#603bdc);border-color:transparent;color:#fff;border-radius:16px 16px 5px 16px}
+.message small{font-size:10px;opacity:.72}
+#messageForm,#groupMessageForm{padding-top:3px}
+#messageForm button,#groupMessageForm button{min-width:72px}
+footer{color:#9088a5;padding:20px}
+@media(max-width:420px){header{padding:23px 16px 25px}main{padding:14px 11px 25px}.panel,#chatBox{padding:16px;border-radius:19px}h2{font-size:18px}#messageForm,#groupMessageForm{gap:6px}#messageForm button,#groupMessageForm button{min-width:62px;padding:10px}}
+
+</style>
+</head>
+
+<body>
+
+<header>
+  <h1>💬 BugiChat</h1>
+  <p>Meet people. Make friends. Stay connected.</p>
+</header>
+
+<main>
+
+  <div id="status">Connecting to BugiChat...</div>
+
+  <!-- Registration and login -->
+  <section id="authPanel" class="panel">
+    <h2>Welcome to BugiChat 💜</h2>
+    <p class="muted">Create an account or sign in to start chatting.</p>
+
+    <form id="authForm">
+      <input
+        id="nameInput"
+        type="text"
+        placeholder="Your display name"
+        maxlength="40"
+        autocomplete="name"
+      >
+
+      <input
+        id="emailInput"
+        type="email"
+        placeholder="Email address"
+        autocomplete="email"
+        required
+      >
+
+      <input
+        id="passwordInput"
+        type="password"
+        placeholder="Password (at least 6 characters)"
+        minlength="6"
+        autocomplete="current-password"
+        required
+      >
+
+      <button id="registerBtn" class="full" type="button">
+        Create Account
+      </button>
+
+      <button class="full secondary" type="submit">
+        Sign In
+      </button>
+    </form>
+
+    <p class="muted">
+      Use your own email address. Never share your password with other users.
+    </p>
+  </section>
+
+  <!-- Home screen -->
+  <section id="homePanel" class="hidden">
+
+    <div class="panel">
+      <h2>Welcome, <span id="myName"></span> 👋</h2>
+      <p class="muted">Find people and start a conversation.</p>
+      <button id="logoutBtn" class="secondary">Log Out</button>
+    </div>
+
+    <div class="panel">
+      <h2>🖼️ My Profile Picture</h2>
+      <p class="muted">Paste a direct image URL below. This works without upgrading Firebase Storage.</p>
+      <input id="photoUrlInput" type="url" placeholder="https://example.com/my-photo.jpg" autocomplete="url">
+      <button id="savePhotoBtn" class="full">Save Profile Picture</button>
+      <p class="muted">Use a public image link that ends in .jpg, .png, or .webp.</p>
+    </div>
+
+    <div class="panel">
+      <h2>👥 Group Chats</h2>
+      <p class="muted">Create a group and add registered friends by email.</p>
+      <input id="groupNameInput" placeholder="Group name" maxlength="50">
+      <input id="groupMembersInput" placeholder="Friend emails, separated by commas">
+      <button id="createGroupBtn" class="full">Create Group</button>
+      <div id="groupList"></div>
+    </div>
+
+    <div class="panel">
+      <h2>🔎 Find People</h2>
+      <input
+        id="searchInput"
+        placeholder="Search by name or email..."
+        autocomplete="off"
+      >
+      <div id="userList"></div>
+    </div>
+
+  </section>
+
+  <!-- Group chat -->
+  <section id="groupChatPanel" class="hidden">
+    <div id="chatBox">
+      <button id="groupBackBtn" class="secondary">← Back</button>
+      <h2 id="groupChatTitle">Group Chat</h2>
+      <p class="muted">Group conversation</p>
+      <div id="groupMessages" class="messages-area">
+        <p class="muted">Loading messages...</p>
+      </div>
+      <form id="groupMessageForm">
+        <input id="groupMessageInput" placeholder="Message the group..." maxlength="2000" autocomplete="off" required>
+        <button id="groupSendBtn" type="submit">Send</button>
+      </form>
+    </div>
+  </section>
+
+  <!-- Private chat -->
+  <section id="chatPanel" class="hidden">
+
+    <div id="chatBox">
+      <button id="backBtn" class="secondary">← Back</button>
+
+      <h2 id="chatTitle">Chat</h2>
+      <p class="muted">Private conversation</p>
+
+      <div id="messages">
+        <p class="muted">Loading messages...</p>
+      </div>
+
+      <form id="messageForm">
+        <input
+          id="messageInput"
+          placeholder="Write a message..."
+          maxlength="2000"
+          autocomplete="off"
+          required
+        >
+        <button id="sendBtn" type="submit">Send</button>
+      </form>
+
+    </div>
+
+  </section>
+
+</main>
+
+<footer>
+  BugiChat © 2026 · Connect kindly 💜
+</footer>
+
+<script type="module">
+
+import { initializeApp }
+  from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
+
+import {
+  getAuth,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  onAuthStateChanged,
+  updateProfile,
+  signOut
+} from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
+
+import {
+  getFirestore,
+  collection,
+  doc,
+  where,
+  updateDoc,
+  getDocs,
+  setDoc,
+  getDoc,
+  addDoc,
+  query,
+  orderBy,
+  onSnapshot,
+  serverTimestamp
+} from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
+
+
+const firebaseConfig = {
+  apiKey: "AIzaSyB4whRvULAt_aRAGU3Df2T8TRMc-qYhquo",
+  authDomain: "bugichat-63f67.firebaseapp.com",
+  projectId: "bugichat-63f67",
+  storageBucket: "bugichat-63f67.firebasestorage.app",
+  messagingSenderId: "1094690658712",
+  appId: "1:1094690658712:web:73cf3156e71699703373ed",
+  measurementId: "G-H6XNG6QZNJ"
+};
+
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+
+const $ = id => document.getElementById(id);
+
+let currentUser = null;
+let currentChatUser = null;
+let stopUsersListener = null;
+let stopMessagesListener = null;
+let busy = false;
+let presenceTimer = null;
+let currentGroup = null;
+let stopGroupsListener = null;
+let stopGroupMessagesListener = null;
+let unreadCounts = {};
+let stopUnreadListeners = {};
+
+function seenStorageKey(chatId) {
+  return "bugichat-seen-" + currentUser.uid + "-" + chatId;
+}
+
+function getSeenMessageIds(chatId) {
+  try {
+    return new Set(JSON.parse(localStorage.getItem(seenStorageKey(chatId)) || "[]"));
+  } catch (_) {
+    return new Set();
+  }
+}
+
+function saveSeenMessageIds(chatId, ids) {
+  try {
+    localStorage.setItem(seenStorageKey(chatId), JSON.stringify([...ids].slice(-1000)));
+  } catch (_) {}
+}
+
+function stopAllUnreadListeners() {
+  Object.values(stopUnreadListeners).forEach(stop => stop());
+  stopUnreadListeners = {};
+  unreadCounts = {};
+}
+
+function watchUnreadMessages(person) {
+  if (!currentUser || !person.uid) return;
+  const chatId = makeChatId(currentUser.uid, person.uid);
+  if (stopUnreadListeners[person.uid]) return;
+
+  const messagesQuery = query(
+    collection(db, "chats", chatId, "messages"),
+    orderBy("createdAt", "asc")
+  );
+
+  stopUnreadListeners[person.uid] = onSnapshot(messagesQuery, snapshot => {
+    const seen = getSeenMessageIds(chatId);
+    let count = 0;
+    snapshot.docs.forEach(item => {
+      const message = item.data();
+      if (message.senderId === person.uid && message.receiverId === currentUser.uid) {
+        if (currentChatUser && currentChatUser.uid === person.uid) {
+          seen.add(item.id);
+        } else if (!seen.has(item.id)) {
+          count++;
+        }
+      }
+    });
+    saveSeenMessageIds(chatId, seen);
+    unreadCounts[person.uid] = count;
+    renderUserList();
+  }, error => console.error("Unread message listener:", error));
+}
+
+async function updateMyPresence(isOnline) {
+  if (!currentUser) return;
+  try {
+    await setDoc(doc(db, "users", currentUser.uid), {
+      uid: currentUser.uid,
+      name: currentUser.displayName || "BugiChat User",
+      email: currentUser.email || "",
+      online: isOnline,
+      lastSeen: serverTimestamp()
+    }, { merge: true });
+  } catch (error) {
+    console.error("Could not update presence:", error);
+  }
+}
+
+
+function setStatus(message) {
+  $("status").textContent = message;
+}
+
+
+function showScreen(screen) {
+  $("authPanel").classList.add("hidden");
+  $("homePanel").classList.add("hidden");
+  $("chatPanel").classList.add("hidden");
+  $("groupChatPanel").classList.add("hidden");
+
+  $(screen).classList.remove("hidden");
+}
+
+
+function showError(error) {
+  console.error(error);
+
+  const messages = {
+    "auth/email-already-in-use":
+      "This email already has an account. Please sign in.",
+
+    "auth/invalid-email":
+      "Please enter a valid email address.",
+
+    "auth/weak-password":
+      "Choose a stronger password with at least 6 characters.",
+
+    "auth/invalid-credential":
+      "Email or password is incorrect.",
+
+    "auth/network-request-failed":
+      "Network error. Check your internet connection.",
+
+    "permission-denied":
+      "Firebase security rules need to be configured.",
+
+    "unavailable":
+      "Firebase is temporarily unavailable. Please try again."
+  };
+
+  setStatus(
+    messages[error.code] ||
+    messages[error.message] ||
+    "Something went wrong. Check your internet and Firebase setup."
+  );
+}
+
+
+// Register a new account
+$("registerBtn").addEventListener("click", async () => {
+
+  if (busy) return;
+
+  const name = $("nameInput").value.trim();
+  const email = $("emailInput").value.trim();
+  const password = $("passwordInput").value;
+
+  if (name.length < 2) {
+    setStatus("Enter a display name with at least 2 characters.");
+    return;
+  }
+
+  if (!email || password.length < 6) {
+    setStatus("Enter your email and a password of at least 6 characters.");
+    return;
+  }
+
+  busy = true;
+  $("registerBtn").disabled = true;
+  setStatus("Creating your account...");
+
+  try {
+    const result = await createUserWithEmailAndPassword(
+      auth, email, password
+    );
+
+    await updateProfile(result.user, {
+      displayName: name
+    });
+
+    await setDoc(doc(db, "users", result.user.uid), {
+      uid: result.user.uid,
+      name: name,
+      email: email,
+      createdAt: serverTimestamp()
+    });
+
+    setStatus("Account created successfully!");
+
+  } catch (error) {
+    showError(error);
+  } finally {
+    busy = false;
+    $("registerBtn").disabled = false;
+  }
+
+});
+
+
+// Sign in
+$("authForm").addEventListener("submit", async event => {
+
+  event.preventDefault();
+
+  if (busy) return;
+
+  const email = $("emailInput").value.trim();
+  const password = $("passwordInput").value;
+
+  busy = true;
+  setStatus("Signing in...");
+
+  try {
+    await signInWithEmailAndPassword(auth, email, password);
+    setStatus("Signed in successfully!");
+  } catch (error) {
+    showError(error);
+  } finally {
+    busy = false;
+  }
+
+});
+
+
+// Listen for account sign-in/sign-out
+onAuthStateChanged(auth, async user => {
+
+  currentUser = user;
+
+  if (!user) {
+
+    if (presenceTimer) {
+      clearInterval(presenceTimer);
+      presenceTimer = null;
+    }
+    cleanupListeners();
+    currentChatUser = null;
+
+    showScreen("authPanel");
+    setStatus("Welcome to BugiChat! Sign in or create an account.");
+    return;
+
+  }
+
+  try {
+
+    if (presenceTimer) clearInterval(presenceTimer);
+    await updateMyPresence(true);
+    presenceTimer = setInterval(() => updateMyPresence(true), 30000);
+
+    const profileRef = doc(db, "users", user.uid);
+    const profile = await getDoc(profileRef);
+
+    if (!profile.exists()) {
+      await setDoc(profileRef, {
+        uid: user.uid,
+        name: user.displayName || "BugiChat User",
+        email: user.email || "",
+        createdAt: serverTimestamp()
+      });
+    }
+
+    $("myName").textContent =
+      user.displayName || user.email || "Friend";
+    $("photoUrlInput").value = profile.exists() ? (profile.data().photoURL || "") : "";
+
+    showScreen("homePanel");
+    setStatus("You're signed in. Find someone to chat with!");
+
+    listenForUsers();
+    listenForGroups();
+
+  } catch (error) {
+    showError(error);
+  }
+
+});
+
+
+// Clean up real-time listeners
+function cleanupListeners() {
+
+  stopAllUnreadListeners();
+
+  if (stopUsersListener) {
+    stopUsersListener();
+    stopUsersListener = null;
+  }
+
+  if (stopMessagesListener) {
+    stopMessagesListener();
+    stopMessagesListener = null;
+  }
+  if (stopGroupsListener) { stopGroupsListener(); stopGroupsListener = null; }
+  if (stopGroupMessagesListener) { stopGroupMessagesListener(); stopGroupMessagesListener = null; }
+
+}
+
+
+// Build a safe profile-picture avatar
+function makeAvatar(photoURL) {
+  const avatar = document.createElement("div");
+  avatar.className = "avatar";
+  if (typeof photoURL === "string" && /^https?:\/\//i.test(photoURL)) {
+    const img = document.createElement("img");
+    img.src = photoURL;
+    img.alt = "Profile picture";
+    img.referrerPolicy = "no-referrer";
+    img.style.width = "100%";
+    img.style.height = "100%";
+    img.style.objectFit = "cover";
+    img.style.borderRadius = "50%";
+    img.onerror = () => { avatar.replaceChildren(); avatar.textContent = "💬"; };
+    avatar.append(img);
+  } else {
+    avatar.textContent = "💬";
+  }
+  return avatar;
+}
+
+// Display registered users and watch for unread messages
+let latestUsers = [];
+function renderUserList() {
+  const search = $("searchInput").value.toLowerCase().trim();
+  const list = $("userList");
+  list.replaceChildren();
+
+  const users = latestUsers.filter(person =>
+    person.uid !== currentUser.uid &&
+    ((person.name || "").toLowerCase().includes(search) ||
+     (person.email || "").toLowerCase().includes(search))
+  );
+
+  if (users.length === 0) {
+    const empty = document.createElement("p");
+    empty.className = "muted";
+    empty.textContent = search
+      ? "No matching users found."
+      : "No other registered users yet. Invite a friend to join!";
+    list.append(empty);
+    return;
+  }
+
+  users.forEach(person => {
+    const card = document.createElement("div");
+    card.className = "user-card";
+
+    const avatar = makeAvatar(person.photoURL);
+
+    const info = document.createElement("div");
+    info.className = "user-info";
+
+    const name = document.createElement("strong");
+    name.textContent = person.name || "BugiChat User";
+
+    const email = document.createElement("small");
+    email.className = "muted";
+    email.textContent = person.email || "";
+
+    const presence = document.createElement("div");
+    presence.className = "presence";
+    const dot = document.createElement("span");
+    dot.className = "presence-dot" + (person.online ? " online" : "");
+    const presenceText = document.createElement("span");
+    presenceText.textContent = person.online ? "Online" : "Offline";
+    presence.append(dot, presenceText);
+    info.append(name, email, presence);
+
+    const actions = document.createElement("div");
+    actions.style.textAlign = "center";
+    const count = unreadCounts[person.uid] || 0;
+    if (count > 0) {
+      const badge = document.createElement("div");
+      badge.className = "unread-badge";
+      badge.textContent = count > 99 ? "99+" : String(count);
+      badge.title = count + " unread message(s)";
+      actions.append(badge);
+    }
+    const button = document.createElement("button");
+    button.textContent = "Chat";
+    button.addEventListener("click", () => openChat(person));
+    actions.append(button);
+
+    card.append(avatar, info, actions);
+    list.append(card);
+    watchUnreadMessages(person);
+  });
+}
+
+function listenForUsers() {
+  if (stopUsersListener) stopUsersListener();
+  const usersQuery = query(collection(db, "users"));
+  stopUsersListener = onSnapshot(usersQuery, snapshot => {
+    latestUsers = snapshot.docs.map(item => item.data());
+    renderUserList();
+  }, showError);
+}
+
+$("searchInput").addEventListener("input", () => {
+  listenForUsers();
+});
+
+
+// Group chat features
+function listenForGroups() {
+  if (!currentUser) return;
+  if (stopGroupsListener) stopGroupsListener();
+  const groupsQuery = query(collection(db, "groups"), where("memberIds", "array-contains", currentUser.uid));
+  stopGroupsListener = onSnapshot(groupsQuery, snapshot => {
+    const list = $("groupList");
+    list.replaceChildren();
+    if (snapshot.empty) {
+      const note = document.createElement("p");
+      note.className = "muted";
+      note.textContent = "No groups yet. Create one above!";
+      list.append(note);
+      return;
+    }
+    snapshot.forEach(item => {
+      const group = { id: item.id, ...item.data() };
+      const card = document.createElement("div");
+      card.className = "user-card";
+      const icon = document.createElement("div");
+      icon.className = "avatar";
+      icon.textContent = "👥";
+      const info = document.createElement("div");
+      info.className = "user-info";
+      const title = document.createElement("strong");
+      title.textContent = group.name || "Group";
+      const sub = document.createElement("small");
+      sub.className = "muted";
+      sub.textContent = (group.memberIds || []).length + " members";
+      info.append(title, sub);
+      const btn = document.createElement("button");
+      btn.textContent = "Open";
+      btn.addEventListener("click", () => openGroupChat(group));
+      card.append(icon, info, btn);
+      list.append(card);
+    });
+  }, showError);
+}
+
+$("createGroupBtn").addEventListener("click", async () => {
+  if (!currentUser) return;
+  const name = $("groupNameInput").value.trim();
+  const emails = $("groupMembersInput").value.split(",").map(x => x.trim().toLowerCase()).filter(Boolean);
+  if (name.length < 2) { setStatus("Enter a group name with at least 2 characters."); return; }
+  if (emails.length === 0) { setStatus("Enter at least one friend's email address."); return; }
+  const btn = $("createGroupBtn"); btn.disabled = true;
+  try {
+    const all = await getDocs(collection(db, "users"));
+    const members = all.docs.map(d => d.data()).filter(u => emails.includes((u.email || "").toLowerCase()));
+    const memberIds = [...new Set([currentUser.uid, ...members.map(u => u.uid).filter(Boolean)])];
+    if (memberIds.length < 2) { setStatus("No matching registered friends found. Check their email addresses."); return; }
+    if (members.length < emails.length) setStatus("Group created. Some emails were not found.");
+    const groupRef = doc(collection(db, "groups"));
+    await setDoc(groupRef, {
+      name, memberIds,
+      memberNames: Object.fromEntries([[currentUser.uid, currentUser.displayName || currentUser.email || "Creator"], ...members.map(u => [u.uid, u.name || u.email || "Member"])]),
+      createdBy: currentUser.uid,
+      createdAt: serverTimestamp()
+    });
+    $("groupNameInput").value = "";
+    $("groupMembersInput").value = "";
+    setStatus("Group created! Open it below to start chatting.");
+  } catch (error) { showError(error); }
+  finally { btn.disabled = false; }
+});
+
+function openGroupChat(group) {
+  if (!currentUser || !(group.memberIds || []).includes(currentUser.uid)) return;
+  currentGroup = group;
+  $("groupChatTitle").textContent = "👥 " + (group.name || "Group");
+  showScreen("groupChatPanel");
+  $("groupMessages").replaceChildren();
+  if (stopGroupMessagesListener) stopGroupMessagesListener();
+  const q = query(collection(db, "groups", group.id, "messages"), orderBy("createdAt", "asc"));
+  stopGroupMessagesListener = onSnapshot(q, snapshot => {
+    const area = $("groupMessages"); area.replaceChildren();
+    if (snapshot.empty) {
+      const note = document.createElement("p"); note.className = "muted"; note.textContent = "Say hello to your group! 👋"; area.append(note);
+    }
+    snapshot.forEach(item => {
+      const m = item.data();
+      const bubble = document.createElement("div"); bubble.className = "message";
+      if (m.senderId === currentUser.uid) bubble.classList.add("mine");
+      const sender = document.createElement("small");
+      sender.textContent = m.senderId === currentUser.uid ? "You" : (m.senderName || "Member");
+      const body = document.createElement("div"); body.textContent = m.text || "";
+      bubble.append(sender, body); area.append(bubble);
+    });
+    area.scrollTop = area.scrollHeight;
+  }, showError);
+}
+
+$("groupMessageForm").addEventListener("submit", async event => {
+  event.preventDefault();
+  const input = $("groupMessageInput"); const text = input.value.trim();
+  if (!text || !currentUser || !currentGroup) return;
+  const btn = $("groupSendBtn"); btn.disabled = true;
+  try {
+    await addDoc(collection(db, "groups", currentGroup.id, "messages"), {
+      text, senderId: currentUser.uid,
+      senderName: currentUser.displayName || currentUser.email || "Member",
+      createdAt: serverTimestamp()
+    });
+    input.value = "";
+  } catch (error) { showError(error); }
+  finally { btn.disabled = false; }
+});
+
+$("groupBackBtn").addEventListener("click", () => {
+  if (stopGroupMessagesListener) { stopGroupMessagesListener(); stopGroupMessagesListener = null; }
+  currentGroup = null; showScreen("homePanel");
+});
+
+// Create a consistent private chat ID
+function makeChatId(uid1, uid2) {
+  return [uid1, uid2].sort().join("_");
+}
+
+
+// Open a conversation
+function openChat(person) {
+
+  if (!currentUser || !person.uid) return;
+
+  currentChatUser = person;
+
+  $("chatTitle").textContent =
+    "Chat with " + (person.name || "BugiChat User");
+
+  showScreen("chatPanel");
+  $("messages").replaceChildren();
+
+  cleanupMessageListener();
+
+  const chatId = makeChatId(currentUser.uid, person.uid);
+
+  const messagesQuery = query(
+    collection(db, "chats", chatId, "messages"),
+    orderBy("createdAt", "asc")
+  );
+
+  stopMessagesListener = onSnapshot(messagesQuery, snapshot => {
+
+    const area = $("messages");
+    area.replaceChildren();
+
+    if (snapshot.empty) {
+      const note = document.createElement("p");
+      note.className = "muted";
+      note.textContent = "Say hello! 👋";
+      area.append(note);
+    }
+
+    const seen = getSeenMessageIds(chatId);
+    snapshot.forEach(item => {
+
+      const message = item.data();
+      if (message.senderId === person.uid && message.receiverId === currentUser.uid) {
+        seen.add(item.id);
+      }
+
+      const bubble = document.createElement("div");
+      bubble.className = "message";
+
+      if (message.senderId === currentUser.uid) {
+        bubble.classList.add("mine");
+      }
+
+      const sender = document.createElement("small");
+      sender.textContent =
+        message.senderId === currentUser.uid
+          ? "You"
+          : (person.name || "Friend");
+
+      const content = document.createElement("div");
+      content.textContent = message.text || "";
+
+      bubble.append(sender, content);
+      area.append(bubble);
+
+    });
+
+    saveSeenMessageIds(chatId, seen);
+    unreadCounts[person.uid] = 0;
+    renderUserList();
+    area.scrollTop = area.scrollHeight;
+
+  }, showError);
+
+}
+
+
+function cleanupMessageListener() {
+  if (stopMessagesListener) {
+    stopMessagesListener();
+    stopMessagesListener = null;
+  }
+}
+
+
+// Send a message
+$("messageForm").addEventListener("submit", async event => {
+
+  event.preventDefault();
+
+  const input = $("messageInput");
+  const text = input.value.trim();
+
+  if (!text || !currentUser || !currentChatUser) return;
+
+  const button = $("sendBtn");
+  button.disabled = true;
+
+  try {
+
+    const chatId = makeChatId(
+      currentUser.uid,
+      currentChatUser.uid
+    );
+
+    await addDoc(
+      collection(db, "chats", chatId, "messages"),
+      {
+        text: text,
+        senderId: currentUser.uid,
+        receiverId: currentChatUser.uid,
+        createdAt: serverTimestamp()
+      }
+    );
+
+    input.value = "";
+
+  } catch (error) {
+    showError(error);
+  } finally {
+    button.disabled = false;
+  }
+
+});
+
+
+// Return to the user list
+$("backBtn").addEventListener("click", () => {
+  cleanupMessageListener();
+  currentChatUser = null;
+  showScreen("homePanel");
+});
+
+
+// Log out
+$("savePhotoBtn").addEventListener("click", async () => {
+  if (!currentUser) { setStatus("Please sign in first."); return; }
+  const photoURL = $("photoUrlInput").value.trim();
+  if (photoURL && !/^https?:\/\//i.test(photoURL)) {
+    setStatus("Please enter a public image link starting with https://"); return;
+  }
+  const btn = $("savePhotoBtn");
+  btn.disabled = true;
+  try {
+    await setDoc(doc(db, "users", currentUser.uid), { uid: currentUser.uid, photoURL }, { merge: true });
+    setStatus(photoURL ? "Profile picture saved! It will appear beside your name." : "Profile picture link cleared.");
+    renderUserList();
+  } catch (error) {
+    showError(error);
+  } finally { btn.disabled = false; }
+});
+
+$("logoutBtn").addEventListener("click", async () => {
+
+  try {
+    cleanupListeners();
+    await signOut(auth);
+  } catch (error) {
+    showError(error);
+  }
+
+});
+
+
+// Best-effort presence update when the page is being closed.
+window.addEventListener("pagehide", () => {
+  if (currentUser) {
+    setDoc(doc(db, "users", currentUser.uid), {
+      online: false,
+      lastSeen: serverTimestamp()
+    }, { merge: true }).catch(() => {});
+  }
+});
+
+// Initial connection status
+setStatus("BugiChat is starting...");
+
+</script>
+
+</body>
+</html>
